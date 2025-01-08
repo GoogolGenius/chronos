@@ -43,7 +43,6 @@ public class LocalizationTest extends OpMode {
     private PoseUpdater poseUpdater;
     private DashboardPoseTracker dashboardPoseTracker;
     private Telemetry telemetryA;
-
     private DcMotorEx leftFront;
     private DcMotorEx leftRear;
     private DcMotorEx rightFront;
@@ -107,9 +106,9 @@ public class LocalizationTest extends OpMode {
         // This ensures all the powers maintain the same ratio, but only when
         // at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double leftFrontPower = (y + x + rx) / denominator;
+        double leftFrontPower = (y - x - rx) / denominator;
         double leftRearPower = (y - x + rx) / denominator;
-        double rightFrontPower = (y - x - rx) / denominator;
+        double rightFrontPower = (y + x + rx) / denominator;
         double rightRearPower = (y + x - rx) / denominator;
 
         leftFront.setPower(leftFrontPower);
@@ -121,6 +120,12 @@ public class LocalizationTest extends OpMode {
         telemetryA.addData("y", poseUpdater.getPose().getY());
         telemetryA.addData("heading", poseUpdater.getPose().getHeading());
         telemetryA.addData("total heading", poseUpdater.getTotalHeading());
+
+        telemetryA.addData("fL", leftFront.getCurrentPosition());
+        telemetryA.addData("bL", leftRear.getCurrentPosition());
+        telemetryA.addData("fR", rightFront.getCurrentPosition());
+        telemetryA.addData("bR", rightRear.getCurrentPosition());
+
         telemetryA.update();
 
         Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
