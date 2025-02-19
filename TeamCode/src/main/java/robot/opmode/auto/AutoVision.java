@@ -31,12 +31,14 @@ public class AutoVision extends OpMode {
         pipeline = new SampleDetectionPipeline();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        camera.setPipeline(pipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
                 // Usually this is where you'll want to start streaming from the camera (see section 4)
+                camera.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
             }
             @Override
             public void onError(int errorCode)
@@ -46,8 +48,6 @@ public class AutoVision extends OpMode {
                  */
             }
         });
-        camera.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
-        camera.setPipeline(pipeline);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -67,6 +67,7 @@ public class AutoVision extends OpMode {
         } else {
             telemetry.addData("Detected:", "None");
         }
+        
         telemetry.update();
     }
 
