@@ -78,8 +78,8 @@ public class TestIO extends OpMode {
 
             case 6: // Intake Rotate CRServos
                 double intakeRotatePower = gamepad1.right_trigger - gamepad1.left_trigger;
-                hardware.intakeRotateL.setPower(intakeRotatePower);
-                hardware.intakeRotateR.setPower(-intakeRotatePower);
+//                hardware.intakeRotateL.setPower(intakeRotatePower);
+//                hardware.intakeRotateR.setPower(-intakeRotatePower);
                 break;
 
             case 7: // Intake Twist Servo

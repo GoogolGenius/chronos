@@ -2,6 +2,7 @@ package robot.config;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -25,8 +26,8 @@ public class Hardware {
     public Servo linkageL;
     public Servo linkageR;
     public DcMotor intake;
-    public CRServo intakeRotateL;
-    public CRServo intakeRotateR;
+    public Servo intakeRotateL;
+    public Servo intakeRotateR;
     public Servo intakeTwist;
     public Servo intakePincer;
 
@@ -46,8 +47,8 @@ public class Hardware {
         linkageL = hardwareMap.get(Servo.class, "linkageL");
         linkageR = hardwareMap.get(Servo.class, "linkageR");
         intake = hardwareMap.get(DcMotor.class, "intake");
-        intakeRotateL = hardwareMap.get(CRServo.class, "intakeRotateL");
-        intakeRotateR = hardwareMap.get(CRServo.class, "intakeRotateR");
+        intakeRotateL = hardwareMap.get(Servo.class, "intakeRotateL");
+        intakeRotateR = hardwareMap.get(Servo.class, "intakeRotateR");
         intakeTwist = hardwareMap.get(Servo.class, "intakeTwist");
         intakePincer = hardwareMap.get(Servo.class, "intakePincer");
 
@@ -59,7 +60,7 @@ public class Hardware {
         fR.setDirection(DcMotor.Direction.REVERSE);
 
         outtakeL.setDirection(DcMotor.Direction.REVERSE);
-        outtakeR.setDirection(DcMotor.Direction.FORWARD);
+        outtakeR.setDirection(DcMotor.Direction.REVERSE);
         intake.setDirection(DcMotor.Direction.REVERSE);
 
         intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -72,11 +73,11 @@ public class Hardware {
 
     public int getOuttakeRotatePosition() {
         // The through-bore encoder for the servos is attached to this motor port
-        return outtakeR.getCurrentPosition();
+        return bR.getCurrentPosition();
     }
 
     public int getIntakeCurrentPosition() {
-        return -intake.getCurrentPosition(); // encoder reads opposite
+        return intake.getCurrentPosition(); // encoder reads opposite
     }
 
     public int getOuttakeCurrentPosition() {

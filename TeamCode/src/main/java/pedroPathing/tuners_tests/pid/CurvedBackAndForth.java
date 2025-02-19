@@ -1,4 +1,4 @@
-package robot.pedroPathing.tuners_tests.pid;
+package pedroPathing.tuners_tests.pid;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -13,8 +13,8 @@ import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
 
-import robot.pedroPathing.constants.FConstants;
-import robot.pedroPathing.constants.LConstants;
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
 
 /**
  * This is the CurvedBackAndForth autonomous OpMode. It runs the robot in a specified distance

@@ -1,5 +1,7 @@
 package robot.system.subsystem;
 
+import com.acmerobotics.dashboard.config.Config;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.concurrent.Executors;
@@ -10,7 +12,9 @@ import robot.config.Hardware;
 import robot.config.PID;
 import robot.system.System;
 
+@Config
 public class Intake extends System {
+    public static double target = 0;
     private PID pid = new PID(0.005, 0, 0);
     private boolean isRotateUp = true;
     private boolean isRotateDown = false;
@@ -68,20 +72,20 @@ public class Intake extends System {
 
         int powerMilliSeconds = 750;
 
-        hardware.intakeRotateL.setPower(1);
-        hardware.intakeRotateR.setPower(-1);
+        hardware.intakeRotateL.setPosition(target);
+//        hardware.intakeRotateR.setPosition(-target);
 
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
-        // Schedule to run after x milliseconds
-        scheduler.schedule(() -> {
-            hardware.intakeRotateL.setPower(0);
-            hardware.intakeRotateR.setPower(0);
-            isRotateUp = true;
-            isRotateDown = false;
-        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
-
-        scheduler.shutdown();
+//        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+//
+//        // Schedule to run after x milliseconds
+//        scheduler.schedule(() -> {
+//            hardware.intakeRotateL.setPower(0);
+//            hardware.intakeRotateR.setPower(0);
+//            isRotateUp = true;
+//            isRotateDown = false;
+//        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
+//
+//        scheduler.shutdown();
     }
 
     public void rotateDown() {
@@ -89,20 +93,20 @@ public class Intake extends System {
 
         int powerMilliSeconds = 750;
 
-        hardware.intakeRotateL.setPower(-1);
-        hardware.intakeRotateR.setPower(1);
+        hardware.intakeRotateL.setPosition(target);
+//        hardware.intakeRotateR.setPosition(target);
 
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
-        // Schedule to run after x milliseconds
-        scheduler.schedule(() -> {
-            hardware.intakeRotateL.setPower(0);
-            hardware.intakeRotateR.setPower(0);
-            isRotateDown = true;
-            isRotateUp = false;
-        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
-
-        scheduler.shutdown();
+//        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+//
+//        // Schedule to run after x milliseconds
+//        scheduler.schedule(() -> {
+//            hardware.intakeRotateL.setPower(0);
+//            hardware.intakeRotateR.setPower(0);
+//            isRotateDown = true;
+//            isRotateUp = false;
+//        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
+//
+//        scheduler.shutdown();
     }
 
     public boolean isRotateUp() {

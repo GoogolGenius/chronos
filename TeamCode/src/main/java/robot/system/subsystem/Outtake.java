@@ -105,12 +105,12 @@ public class Outtake extends System {
     }
 
     public void twistHorizontal() {
-        double targetPosition = 0.3; //0.35;
+        double targetPosition = 0.325; //0.35;
         hardware.outtakeTwist.setPosition(targetPosition);
     }
 
     public void twistInverseHorizontal() {
-        double targetPosition = 0.98; // servo box faces up at transfer
+        double targetPosition = 1.0; // 0.98; // servo box faces up at transfer
         hardware.outtakeTwist.setPosition(targetPosition);
     }
 

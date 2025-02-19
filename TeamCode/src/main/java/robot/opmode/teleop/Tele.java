@@ -106,8 +106,8 @@ public class Tele extends OpMode {
         telemetry.addData("State", ioController.getState());
         telemetry.addData("Intake Position", hardware.intake.getCurrentPosition());
         telemetry.addData("Intake Power", hardware.intake.getPower());
-        telemetry.addData("Intake RotateL power", hardware.intakeRotateL.getPower());
-        telemetry.addData("Intake RotateR power", hardware.intakeRotateR.getPower());
+//        telemetry.addData("Intake RotateL power", hardware.intakeRotateL.getPower());
+//        telemetry.addData("Intake RotateR power", hardware.intakeRotateR.getPower());
         telemetry.addData("Rotate Down", intake.isRotateDown());
         telemetry.addData("linkageR Pos", hardware.linkageR.getPosition());
         telemetry.addData("linkageL Pos", hardware.linkageL.getPosition());

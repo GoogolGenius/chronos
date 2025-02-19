@@ -1,4 +1,4 @@
-package robot.pedroPathing.tuners_tests.localization;
+package pedroPathing.tuners_tests.localization;
 
 import static com.pedropathing.follower.FollowerConstants.leftFrontMotorName;
 import static com.pedropathing.follower.FollowerConstants.leftRearMotorName;
@@ -28,8 +28,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import robot.pedroPathing.constants.*;
-import robot.pedroPathing.constants.FConstants;
-import robot.pedroPathing.constants.LConstants;
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
 
 /**
  * This is the LocalizationTest OpMode. This is basically just a simple mecanum drive attached to a
