@@ -56,13 +56,14 @@ public class Hardware {
         // Reverse the motor that runs backwards when connected directly to the battery
         bL.setDirection(DcMotor.Direction.REVERSE);
         bR.setDirection(DcMotor.Direction.FORWARD);
-        fL.setDirection(DcMotor.Direction.FORWARD);
-        fR.setDirection(DcMotor.Direction.REVERSE);
+        fL.setDirection(DcMotor.Direction.REVERSE);
+        fR.setDirection(DcMotor.Direction.FORWARD);
 
         outtakeL.setDirection(DcMotor.Direction.REVERSE);
         outtakeR.setDirection(DcMotor.Direction.REVERSE);
         intake.setDirection(DcMotor.Direction.REVERSE);
 
+     //   bR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         outtakeR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         outtakeL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -73,7 +74,7 @@ public class Hardware {
 
     public int getOuttakeRotatePosition() {
         // The through-bore encoder for the servos is attached to this motor port
-        return bR.getCurrentPosition();
+        return -bR.getCurrentPosition();
     }
 
     public int getIntakeCurrentPosition() {

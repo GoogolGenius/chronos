@@ -80,18 +80,18 @@ public class IOController {
             case IDLE:
                 Idle.run(this);
                 break;
-//            case PICKUP:
-//                 Pickup.run(this);
-//                break;
-//            case HANDOFF_INITIALIZING:
-//                HandoffInitializing.run(this);
-//                break;
-//            case HANDOFF_READY:
-//                 HandoffReady.run(this);
-//                break;
-//            case BUCKET_PLACEMENT:
-//                 BucketPlacement.run(this);
-//                break;
+            case PICKUP:
+                 Pickup.run(this);
+                break;
+            case HANDOFF_INITIALIZING:
+                HandoffInitializing.run(this);
+                break;
+            case HANDOFF_READY:
+                 HandoffReady.run(this);
+                break;
+            case BUCKET_PLACEMENT:
+                 BucketPlacement.run(this);
+                break;
             case RUNG_PLACEMENT:
                  RungPlacement.run(this);
                 break;

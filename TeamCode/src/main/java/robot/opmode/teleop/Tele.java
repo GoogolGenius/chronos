@@ -2,6 +2,7 @@ package robot.opmode.teleop;
 
 import android.os.SystemClock;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,8 +16,10 @@ import robot.system.subsystem.Drive;
 import robot.system.subsystem.Intake;
 import robot.system.subsystem.Outtake;
 
+@Config
 @TeleOp(name = "Tele", group = "Iterative OpMode")
 public class Tele extends OpMode {
+    public static double target = 0;
     private final ElapsedTime runtime = new ElapsedTime();
     private Hardware hardware;
     private IOController ioController;
@@ -83,8 +86,8 @@ public class Tele extends OpMode {
 
 //          hardware.outtakeRotateR.setPower(1);
 //
-//        hardware.linkageR.setPosition(-.9); // R backward 0.5
-//        hardware.linkageL.setPosition(0.5); // L forward 0.5
+        hardware.linkageR.setPosition(target); // R backward 0.5
+        hardware.linkageL.setPosition(target); // L forward 0.5
 //        outtake.rotate(Outtake.OuttakeRotate.TRANSFER);
 
 //        hardware.outtakePincer.setPosition(1);

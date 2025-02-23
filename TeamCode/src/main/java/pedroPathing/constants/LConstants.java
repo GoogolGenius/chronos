@@ -1,20 +1,22 @@
 package pedroPathing.constants;
 
+
 import com.pedropathing.localization.*;
 import com.pedropathing.localization.constants.*;
 
 public class LConstants {
     static {
-        DriveEncoderConstants.forwardTicksToInches = 0.6177;
-        DriveEncoderConstants.strafeTicksToInches = 4.4885;
-        DriveEncoderConstants.turnTicksToInches = 0.0405;
-
-        DriveEncoderConstants.robot_Width = 16;
-        DriveEncoderConstants.robot_Length = 16;
-
-        DriveEncoderConstants.leftFrontEncoderDirection = Encoder.FORWARD;
-        DriveEncoderConstants.leftRearEncoderDirection = Encoder.REVERSE;
-        DriveEncoderConstants.rightFrontEncoderDirection = Encoder.REVERSE;
-        DriveEncoderConstants.rightRearEncoderDirection = Encoder.FORWARD;
+        ThreeWheelConstants.forwardTicksToInches = .00065;
+        ThreeWheelConstants.strafeTicksToInches = .0005;
+        ThreeWheelConstants.turnTicksToInches = .0005;
+        ThreeWheelConstants.leftY = 6.6;
+        ThreeWheelConstants.rightY = -6.6;
+        ThreeWheelConstants.strafeX = 3.3;
+        ThreeWheelConstants.leftEncoder_HardwareMapName = "fR";
+        ThreeWheelConstants.rightEncoder_HardwareMapName = "bL";
+        ThreeWheelConstants.strafeEncoder_HardwareMapName = "fL";
+        ThreeWheelConstants.leftEncoderDirection = Encoder.REVERSE;
+        ThreeWheelConstants.rightEncoderDirection = Encoder.FORWARD;
+        ThreeWheelConstants.strafeEncoderDirection = Encoder.FORWARD;
     }
 }
