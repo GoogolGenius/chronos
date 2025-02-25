@@ -63,10 +63,11 @@ public class Hardware {
         outtakeR.setDirection(DcMotor.Direction.REVERSE);
         intake.setDirection(DcMotor.Direction.REVERSE);
 
-     //   bR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         outtakeR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         outtakeL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         outtakeR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         outtakeL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -100,24 +101,24 @@ public class Hardware {
     }
 
     public void strafeLeft(double power) {
+        bL.setPower(-power);
+        bR.setPower(power);
+        fL.setPower(-power);
+        fR.setPower(power);
+    }
+
+    public void strafeRight(double power) {
         bL.setPower(power);
         bR.setPower(-power);
         fL.setPower(power);
         fR.setPower(-power);
     }
 
-    public void strafeRight(double power) {
-        bL.setPower(-power);
-        bR.setPower(power);
-        fL.setPower(-power);
-        fR.setPower(power);
-    }
-
     public final void rotateLeft(double power) {
-        bL.setPower(-power);
+        bL.setPower(power);
         bR.setPower(power);
         fL.setPower(-power);
-        fR.setPower(power);
+        fR.setPower(-power);
     }
 
     public final void rotateRight(double power) {
