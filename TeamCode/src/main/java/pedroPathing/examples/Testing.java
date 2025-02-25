@@ -43,16 +43,16 @@ public class Testing extends OpMode {
     private final Pose moveToTwoPose = new Pose(62, 20, Math.toRadians(0));
     private final Pose moveToTwoControl = new Pose(66, 34, Math.toRadians(0));
     private final Pose pushTwoPose = new Pose(12, 20, Math.toRadians(0));
-    private final Pose moveToThreePose = new Pose(52, 18, Math.toRadians(0));
-    private final Pose moveToThreeControl = new Pose(100, 18, Math.toRadians(0));
-    private final Pose pushThreePose = new Pose(10, 18, Math.toRadians(0));
+    private final Pose moveToThreePose = new Pose(62, 18, Math.toRadians(0));
+    private final Pose moveToThreeControl = new Pose(65, 25, Math.toRadians(0));
+    private final Pose pushThreePose = new Pose(10, 20, Math.toRadians(0));
     private final Pose moveFromWallPose = new Pose(14, 16, Math.toRadians(0));
-    private final Pose pickupPose = new Pose(10, 26, Math.toRadians(0));
-    private final Pose placeOnePose = new Pose(39, 78, Math.toRadians(0));
+    private final Pose pickupPose = new Pose(10, 45, Math.toRadians(0));
+    private final Pose placeOnePose = new Pose(37, 70, Math.toRadians(0));
     private final Pose placeOneControl = new Pose(14, 76, Math.toRadians(0));
-    private final Pose placeTwoPose = new Pose(39, 76, Math.toRadians(0));
-    private final Pose placeThreePose = new Pose(39, 74, Math.toRadians(0));
-    private final Pose placeFourPose = new Pose(39, 72, Math.toRadians(0));
+    private final Pose placeTwoPose = new Pose(37, 68, Math.toRadians(0));
+    private final Pose placeThreePose = new Pose(37, 66, Math.toRadians(0));
+    private final Pose placeFourPose = new Pose(37, 64, Math.toRadians(0));
     private final Pose parkPose = new Pose(8, 26, Math.toRadians(0));
 
     private Path moveToOne, strafeToOne, pushOne, moveToTwo, pushTwo, moveToThree, angleForThree, pushThree, moveFromWall, placeOne, pickupTwo, placeTwo, pickupThree, placeThree, pickupFour, placeFour, park;
@@ -82,8 +82,8 @@ public class Testing extends OpMode {
         moveFromWall = new Path(new BezierLine(new Point(pushThreePose), new Point(moveFromWallPose)));
         moveFromWall.setLinearHeadingInterpolation(pushThreePose.getHeading(), moveFromWallPose.getHeading());
 
-        placeOne = new Path(new BezierCurve(new Point(moveFromWallPose), new Point(placeOneControl), new Point(placeOnePose)));
-        placeOne.setLinearHeadingInterpolation(moveFromWallPose.getHeading(), placeOnePose.getHeading());
+        placeOne = new Path(new BezierCurve(new Point(pushThreePose), new Point(placeOneControl), new Point(placeOnePose)));
+        placeOne.setLinearHeadingInterpolation(pushThreePose.getHeading(), placeOnePose.getHeading());
 
         pickupTwo = new Path(new BezierLine(new Point(placeOnePose), new Point(pickupPose)));
         pickupTwo.setLinearHeadingInterpolation(placeOnePose.getHeading(), pickupPose.getHeading());
@@ -122,91 +122,91 @@ public class Testing extends OpMode {
                 break;
             case 1:
                 if(!follower.isBusy()) {
-                    follower.followPath(strafeToOne, true);
+                    follower.followPath(strafeToOne, false);
                     setPathState(2);
                     }
                 break;
             case 2:
                 if(!follower.isBusy()) {
-                    follower.followPath(pushOne, true);
+                    follower.followPath(pushOne, false);
                     setPathState(3);
                 }
                 break;
             case 3:
                 if(!follower.isBusy()) {
-                    follower.followPath(moveToTwo, true);
+                    follower.followPath(moveToTwo, false);
                     setPathState(4);
                 }
                 break;
             case 4:
                 if(!follower.isBusy()) {
-                    follower.followPath(pushTwo, true);
+                    follower.followPath(pushTwo, false);
                     setPathState(5);
                 }
                 break;
             case 5:
                 if(!follower.isBusy()) {
-                    follower.followPath(moveToThree, true);
+                    follower.followPath(moveToThree, false);
                     setPathState(7);
                 }
                 break;
             case 7:
                 if(!follower.isBusy()) {
-                    follower.followPath(pushThree, true);
-                    setPathState(8);
-                }
-                break;
-            case 8:
-                if(!follower.isBusy()) {
-                    follower.followPath(moveFromWall, true);
+                    follower.followPath(pushThree, false);
                     setPathState(9);
                 }
                 break;
+//            case 8:
+//                if(!follower.isBusy()) {
+//                    follower.followPath(moveFromWall, false);
+//                    setPathState(9);
+//                }
+//                break;
             case 9:
                 if(!follower.isBusy()) {
-                    follower.followPath(placeOne, true);
+                    follower.followPath(placeOne, false);
                     setPathState(10);
                 }
                 break;
             case 10:
                 if(!follower.isBusy()) {
-                    follower.followPath(pickupTwo, true);
+                    follower.followPath(pickupTwo, false);
                     setPathState(11);
                 }
                 break;
             case 11:
                 if(!follower.isBusy()) {
-                    follower.followPath(placeTwo, true);
+                    follower.followPath(placeTwo, false);
                     setPathState(12);
                 }
                 break;
             case 12:
                 if(!follower.isBusy()) {
-                    follower.followPath(pickupThree, true);
+                    follower.followPath(pickupThree, false);
                     setPathState(13);
                 }
                 break;
             case 13:
                 if(!follower.isBusy()) {
-                    follower.followPath(placeThree, true);
+                    follower.followPath(placeThree, false);
                     setPathState(14);
                 }
                 break;
             case 14:
                 if(!follower.isBusy()) {
-                    follower.followPath(pickupFour, true);
+                    follower.followPath(pickupFour, false);
                     setPathState(15);
                 }
                 break;
             case 15:
                 if(!follower.isBusy()) {
-                    follower.followPath(placeFour, true);
+                    follower.followPath(placeFour, false);
                     setPathState(16);
                 }
                 break;
             case 16:
                 if(!follower.isBusy()) {
-                    follower.followPath(park, true);
+                    follower.followPath(park, false);
                 }
                 break;
             }
