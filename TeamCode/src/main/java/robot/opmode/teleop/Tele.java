@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -86,9 +87,12 @@ public class Tele extends OpMode {
 
 //          hardware.outtakeRotateR.setPower(1);
 //
-        hardware.linkageR.setPosition(target); // R backward 0.5
-        hardware.linkageL.setPosition(target); // L forward 0.5
-//        outtake.rotate(Outtake.OuttakeRotate.TRANSFER);
+//        hardware.linkageR.setPosition(target); // R backward 0.5
+//        hardware.linkageL.setPosition(target); // L forward 0.5
+//        outtake.rotate(Outtake.OuttakeRotate.SUBMERSIBLE);
+
+//        hardware.outtakeRotateR.setPower(target);
+//        hardwareMap.get(CRServo.class, "outtakeRotateR").setPower(target);
 
 //        hardware.outtakePincer.setPosition(1);
 //        hardware.outtakeTwist.setPosition(0.5);

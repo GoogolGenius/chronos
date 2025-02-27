@@ -33,7 +33,7 @@ public class Outtake extends System {
         TRANSFER(0),
         SUBMERSIBLE(-1150), //-1300
         SUBMERSIBLE_RIGHT(-1150),
-        WALL(2125);
+        WALL(2225);
 
         private final int value;
 
@@ -126,25 +126,17 @@ public class Outtake extends System {
     public void rotate(OuttakeRotate position) {
         rotatePosition = position;
         int targetPosition = position.getValue();
-        int currentPosition = -hardware.getOuttakeRotatePosition();
+        int currentPosition = hardware.getOuttakeRotatePosition();
         double power = pidRotate.out(targetPosition, currentPosition);
-        hardware.outtakeRotateR.setPower(power);
-//        hardware.outtakeRotateL.setPower(-power);
-
-//        if (hardware.getOuttakeRotatePosition() == position.getValue()) {
-//            hardware.outtakeRotateR.setPower(0);
-//        } else if (hardware.getOuttakeRotatePosition() < position.getValue()) {
-//            hardware.outtakeRotateR.setPower(0.1);
-//        } else {
-//            hardware.outtakeRotateR.setPower(-0.1);
-//        }
+//        hardware.outtakeRotateR.setPower(power); // broken servo
+        hardware.outtakeRotateL.setPower(-power);
     }
 
     public void rotate(int position) {
         int targetPosition = position;
-        int currentPosition = -hardware.getOuttakeRotatePosition();
+        int currentPosition = hardware.getOuttakeRotatePosition();
         double power = pidRotate.out(targetPosition, currentPosition);
-        hardware.outtakeRotateR.setPower(power);
+        hardware.outtakeRotateL.setPower(power);
     }
 
     public boolean isRotated() {
