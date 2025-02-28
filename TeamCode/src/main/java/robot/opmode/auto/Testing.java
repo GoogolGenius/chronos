@@ -47,14 +47,14 @@ public class Testing extends OpMode {
     private final Pose pushTwoPose = new Pose(25, 16, Math.toRadians(0));
     private final Pose moveToThreePose = new Pose(60, 12, Math.toRadians(0));
     private final Pose moveToThreeControl = new Pose(60, 25, Math.toRadians(0));
-    private final Pose pushThreePose = new Pose(20, 12, Math.toRadians(0));
+    private final Pose pushThreePose = new Pose(12, 12, Math.toRadians(0));
     private final Pose moveFromWallPose = new Pose(14, 16, Math.toRadians(0));
-    private final Pose pickupPose = new Pose(13, 36, Math.toRadians(0));
-    private final Pose placeOnePose = new Pose(37, 71, Math.toRadians(0));
+    private final Pose pickupPose = new Pose(11.75, 36, Math.toRadians(0));
+    private final Pose placeOnePose = new Pose(38, 71, Math.toRadians(0));
     private final Pose placeOneControl = new Pose(14, 71, Math.toRadians(0));
-    private final Pose placeTwoPose = new Pose(37, 70, Math.toRadians(0));
-    private final Pose placeThreePose = new Pose(37, 69, Math.toRadians(0));
-    private final Pose placeFourPose = new Pose(37, 68, Math.toRadians(0));
+    private final Pose placeTwoPose = new Pose(38, 70, Math.toRadians(0));
+    private final Pose placeThreePose = new Pose(38, 69, Math.toRadians(0));
+    private final Pose placeFourPose = new Pose(38, 68, Math.toRadians(0));
     private final Pose parkPose = new Pose(12, 26, Math.toRadians(0));
 
     // PathChain for cases 0-7
@@ -137,35 +137,50 @@ public class Testing extends OpMode {
     public void autonomousPathUpdate() {
         outtake.rotate(outtake.getRotatePosition());
         outtake.setToTargetPosition(outtake.getLevel());
-        outtake.twistHorizontal();
-        outtake.pincerOpen();
+        intake.retract();
+
         switch (pathState) {
             case 0:
+                outtake.pincerOpen();
+                outtake.twistInverseHorizontal();
+                outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
+                outtake.setLevel(Outtake.OuttakeLevel.GROUND);
+                outtake.linkageBackward();
                 // Follow the entire pushConePathChain as one sequence
                 follower.followPath(pushConePathChain, true);
-                setPathState(9); // Skip to case 9 after pushConePathChain is complete
+                setPathState(8); // Skip to case 9 after pushConePathChain is complete
                 break;
             case 8:
                 if(!follower.isBusy()) {
-                    follower.followPath(pushThree, 0.5, false);
-                    setPathState(10);
-                }
-            case 9:
-                if(!follower.isBusy()) {
+                    follower.followPath(pushThree, 0.85, false);
                     outtake.twistInverseHorizontal();
                     outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
-                    outtake.setLevel(Outtake.OuttakeLevel.GROUND);
+                    outtake.setLevel(Outtake.OuttakeLevel.WALL);
                     outtake.linkageBackward();
+                    setPathState(9);
+                }
+            case 9:
+                outtake.pincerOpen();
+                outtake.twistInverseHorizontal();
+                outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
+                outtake.setLevel(Outtake.OuttakeLevel.WALL);
+                outtake.linkageBackward();
+                if(!follower.isBusy()) {
+                    outtake.pincerClose();
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                     follower.followPath(placeOne, false);
                     setPathState(10);
                 }
                 break;
             case 10:
-                outtake.pincerClose();
                 outtake.twistHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
-                outtake.setLevel(Outtake.OuttakeLevel.WALL);
-                outtake.linkageBackward();
+                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
+                outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
+                outtake.linkageForward();
                 if(!follower.isBusy()) {
                     follower.followPath(pickupTwo, false);
                     setPathState(11);
@@ -178,14 +193,19 @@ public class Testing extends OpMode {
                 outtake.setLevel(Outtake.OuttakeLevel.WALL);
                 outtake.linkageBackward();
                 if(!follower.isBusy()) {
-                    follower.followPath(placeTwo, false);
                     outtake.pincerClose();
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                    follower.followPath(placeTwo, false);
                     setPathState(12);
                 }
                 break;
             case 12:
                 outtake.twistHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE_RIGHT);
+                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
                 outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
                 outtake.linkageForward();
                 if(!follower.isBusy()) {
@@ -200,14 +220,19 @@ public class Testing extends OpMode {
                 outtake.setLevel(Outtake.OuttakeLevel.WALL);
                 outtake.linkageBackward();
                 if(!follower.isBusy()) {
+                    outtake.pincerClose();
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                     follower.followPath(placeThree, false);
                     setPathState(14);
                 }
                 break;
             case 14:
-                outtake.pincerClose();
                 outtake.twistHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE_RIGHT);
+                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
                 outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
                 outtake.linkageForward();
                 if(!follower.isBusy()) {
@@ -222,14 +247,19 @@ public class Testing extends OpMode {
                 outtake.setLevel(Outtake.OuttakeLevel.WALL);
                 outtake.linkageBackward();
                 if(!follower.isBusy()) {
+                    outtake.pincerClose();
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                     follower.followPath(placeFour, false);
                     setPathState(16);
                 }
                 break;
             case 16:
-                outtake.pincerClose();
                 outtake.twistHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE_RIGHT);
+                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
                 outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
                 outtake.linkageForward();
                 if(!follower.isBusy()) {
@@ -248,7 +278,6 @@ public class Testing extends OpMode {
     public void loop() {
         // These loop the movements of the robot
         follower.update();
-        intake.retract();
         autonomousPathUpdate();
 
         // Feedback to Driver Hub
