@@ -47,9 +47,9 @@ public class Testing extends OpMode {
     private final Pose pushTwoPose = new Pose(25, 16, Math.toRadians(0));
     private final Pose moveToThreePose = new Pose(60, 12, Math.toRadians(0));
     private final Pose moveToThreeControl = new Pose(60, 25, Math.toRadians(0));
-    private final Pose pushThreePose = new Pose(25, 12, Math.toRadians(0));
+    private final Pose pushThreePose = new Pose(20, 12, Math.toRadians(0));
     private final Pose moveFromWallPose = new Pose(14, 16, Math.toRadians(0));
-    private final Pose pickupPose = new Pose(12, 36, Math.toRadians(0));
+    private final Pose pickupPose = new Pose(13, 36, Math.toRadians(0));
     private final Pose placeOnePose = new Pose(37, 71, Math.toRadians(0));
     private final Pose placeOneControl = new Pose(14, 71, Math.toRadians(0));
     private final Pose placeTwoPose = new Pose(37, 70, Math.toRadians(0));
@@ -151,40 +151,39 @@ public class Testing extends OpMode {
                     setPathState(10);
                 }
             case 9:
-                outtake.pincerClose();
-                outtake.twistInverseHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
-                outtake.setLevel(Outtake.OuttakeLevel.GROUND);
-                outtake.linkageBackward();
                 if(!follower.isBusy()) {
+                    outtake.twistInverseHorizontal();
+                    outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
+                    outtake.setLevel(Outtake.OuttakeLevel.GROUND);
+                    outtake.linkageBackward();
                     follower.followPath(placeOne, false);
                     setPathState(10);
                 }
                 break;
             case 10:
-                outtake.pincerOpen();
+                outtake.pincerClose();
                 outtake.twistHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE_RIGHT);
-                outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
-                outtake.linkageForward();
+                outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
+                outtake.setLevel(Outtake.OuttakeLevel.WALL);
+                outtake.linkageBackward();
                 if(!follower.isBusy()) {
                     follower.followPath(pickupTwo, false);
                     setPathState(11);
                 }
                 break;
             case 11:
-                outtake.pincerClose();
+                outtake.pincerOpen();
                 outtake.twistInverseHorizontal();
                 outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
                 outtake.setLevel(Outtake.OuttakeLevel.WALL);
                 outtake.linkageBackward();
                 if(!follower.isBusy()) {
                     follower.followPath(placeTwo, false);
+                    outtake.pincerClose();
                     setPathState(12);
                 }
                 break;
             case 12:
-                outtake.pincerOpen();
                 outtake.twistHorizontal();
                 outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE_RIGHT);
                 outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
@@ -195,7 +194,7 @@ public class Testing extends OpMode {
                 }
                 break;
             case 13:
-                outtake.pincerClose();
+                outtake.pincerOpen();
                 outtake.twistInverseHorizontal();
                 outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
                 outtake.setLevel(Outtake.OuttakeLevel.WALL);
@@ -206,7 +205,7 @@ public class Testing extends OpMode {
                 }
                 break;
             case 14:
-                outtake.pincerOpen();
+                outtake.pincerClose();
                 outtake.twistHorizontal();
                 outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE_RIGHT);
                 outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
@@ -217,7 +216,7 @@ public class Testing extends OpMode {
                 }
                 break;
             case 15:
-                outtake.pincerClose();
+                outtake.pincerOpen();
                 outtake.twistInverseHorizontal();
                 outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
                 outtake.setLevel(Outtake.OuttakeLevel.WALL);
@@ -228,12 +227,17 @@ public class Testing extends OpMode {
                 }
                 break;
             case 16:
-                outtake.pincerOpen();
+                outtake.pincerClose();
                 outtake.twistHorizontal();
                 outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE_RIGHT);
                 outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
                 outtake.linkageForward();
                 if(!follower.isBusy()) {
+                    outtake.twistInverseHorizontal();
+                    outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
+                    outtake.setLevel(Outtake.OuttakeLevel.WALL);
+                    outtake.linkageBackward();
+                    outtake.pincerOpen();
                     follower.followPath(park, false);
                 }
                 break;
