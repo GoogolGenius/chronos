@@ -15,7 +15,7 @@ import robot.system.System;
 @Config
 public class Intake extends System {
     public static double target = 0;
-    private PID pid = new PID(0.005, 0, 0);
+    private PID pid = new PID(0.01, 0, 0);
     private boolean isRotateUp = true;
     private boolean isRotateDown = false;
 
@@ -24,7 +24,7 @@ public class Intake extends System {
     }
 
     public void extend() {
-        int targetPosition = 120;
+        int targetPosition = 180;
         int currentPosition = hardware.getIntakeCurrentPosition();
         double power = pid.out(targetPosition, currentPosition);
         hardware.intake.setPower(power);
@@ -94,7 +94,7 @@ public class Intake extends System {
         int powerMilliSeconds = 750;
 
         hardware.intakeRotateL.setPosition(target);
-//        hardware.intakeRotateR.setPosition(target);
+//        hardware.intakeRotateR.setPosition(-target);
 
 //        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 //

@@ -25,50 +25,50 @@ import robot.system.subsystem.Outtake;
 
 @Autonomous(name = "Testing", group = "Real Auto")
 public class Testing extends OpMode {
-    //added by Alex, code from tele file
     private Hardware hardware;
-    private IOController ioController;
     private Drive drive;
     private Intake intake;
     private Outtake outtake;
-    //after this is the regular odo code initializing variable stuff (I don't actually know how this works)
     private Follower follower;
     private Timer pathTimer, actionTimer, opmodeTimer;
 
     private int pathState;
 
-    private final Pose startPose = new Pose(8, 44, Math.toRadians(0));
-    private final Pose moveToOnePose = new Pose(40, 34, Math.toRadians(0));
-    private final Pose moveToOneControl = new Pose(4, 34, Math.toRadians(0));
-    private final Pose strafeToOnePose = new Pose(60, 26, Math.toRadians(0));
-    private final Pose pushOnePose = new Pose(25, 26, Math.toRadians(0));
-    private final Pose moveToTwoPose = new Pose(60, 16, Math.toRadians(0));
+    private final Pose startPose = new Pose(8, 60, Math.toRadians(0));
+    private final Pose placePreloadPose = new Pose(37, 69, Math.toRadians(0));
+    private final Pose moveToOnePose = new Pose(60, 36, Math.toRadians(0));
+    private final Pose moveToOneControl = new Pose(22, 36, Math.toRadians(0));
+    private final Pose strafeToOnePose = new Pose(60, 28, Math.toRadians(0));
+    private final Pose pushOnePose = new Pose(25, 28, Math.toRadians(0));
+    private final Pose moveToTwoPose = new Pose(60, 20, Math.toRadians(0));
     private final Pose moveToTwoControl = new Pose(60, 34, Math.toRadians(0));
-    private final Pose pushTwoPose = new Pose(25, 16, Math.toRadians(0));
-    private final Pose moveToThreePose = new Pose(60, 12, Math.toRadians(0));
+    private final Pose pushTwoPose = new Pose(11, 20, Math.toRadians(0));
+    private final Pose moveToThreePose = new Pose(60, 15, Math.toRadians(0));
     private final Pose moveToThreeControl = new Pose(60, 25, Math.toRadians(0));
-    private final Pose pushThreePose = new Pose(12, 12, Math.toRadians(0));
-    private final Pose moveFromWallPose = new Pose(14, 16, Math.toRadians(0));
-    private final Pose pickupPose = new Pose(11.75, 36, Math.toRadians(0));
-    private final Pose placeOnePose = new Pose(38, 71, Math.toRadians(0));
+    private final Pose pushThreePose = new Pose(11, 15, Math.toRadians(0));
+    private final Pose pickupPose = new Pose(11, 34, Math.toRadians(0));
+    private final Pose placeOnePose = new Pose(37, 71, Math.toRadians(0));
     private final Pose placeOneControl = new Pose(14, 71, Math.toRadians(0));
     private final Pose placeTwoPose = new Pose(38, 70, Math.toRadians(0));
-    private final Pose placeThreePose = new Pose(38, 69, Math.toRadians(0));
-    private final Pose placeFourPose = new Pose(38, 68, Math.toRadians(0));
+    private final Pose placeThreePose = new Pose(37, 72, Math.toRadians(0));
+    private final Pose placeFourPose = new Pose(37, 68, Math.toRadians(0));
+    private final Pose pickupControl = new Pose(26, 34, Math.toRadians(0));
     private final Pose parkPose = new Pose(12, 26, Math.toRadians(0));
 
-    // PathChain for cases 0-7
-    private PathChain pushConePathChain, pushThree;
+    // PathChain for cases 0-6
+    private PathChain pushSamplePathChain, pushTwo;
 
     // Remaining individual paths
-    private Path placeOne, pickupTwo, placeTwo, pickupThree, placeThree, pickupFour, placeFour, park;
+    private Path placePreload, placeOne, pickupTwo, placeTwo, pickupThree, placeThree, pickupFour, placeFour, park;
 
     public void buildPaths() {
-        // Create a PathChain for cases 0-7 using pathBuilder
-        pushConePathChain = follower.pathBuilder()
-                // First path: moveToOne (case 0)
-                .addPath(new BezierCurve(new Point(startPose), new Point(moveToOneControl), new Point(moveToOnePose)))
-                .setLinearHeadingInterpolation(startPose.getHeading(), moveToOnePose.getHeading())
+
+        placePreload = new Path(new BezierLine(new Point(startPose), new Point(placePreloadPose)));
+        placePreload.setLinearHeadingInterpolation(startPose.getHeading(), placePreloadPose.getHeading());
+
+        pushSamplePathChain = follower.pathBuilder()
+                .addPath(new BezierCurve(new Point(placePreloadPose), new Point(moveToOneControl), new Point(moveToOnePose)))
+                .setLinearHeadingInterpolation(placePreloadPose.getHeading(), moveToOnePose.getHeading())
 
                 // Second path: strafeToOne (case 1-2)
                 .addPath(new BezierLine(new Point(moveToOnePose), new Point(strafeToOnePose)))
@@ -82,13 +82,13 @@ public class Testing extends OpMode {
                 .addPath(new BezierCurve(new Point(pushOnePose), new Point(moveToTwoControl), new Point(moveToTwoPose)))
                 .setLinearHeadingInterpolation(pushOnePose.getHeading(), moveToTwoPose.getHeading())
 
-                // Fifth path: pushTwo (case 4-5)
-                .addPath(new BezierLine(new Point(moveToTwoPose), new Point(pushTwoPose)))
-                .setLinearHeadingInterpolation(moveToTwoPose.getHeading(), pushTwoPose.getHeading())
+//                // Fifth path: pushTwo (case 4-5)
+//                .addPath(new BezierLine(new Point(moveToTwoPose), new Point(pushTwoPose)))
+//                .setLinearHeadingInterpolation(moveToTwoPose.getHeading(), pushTwoPose.getHeading())
 
                 // Sixth path: moveToThree (case 5-7)
-                .addPath(new BezierCurve(new Point(pushTwoPose), new Point(moveToThreeControl), new Point(moveToThreePose)))
-                .setLinearHeadingInterpolation(pushTwoPose.getHeading(), moveToThreePose.getHeading())
+                //.addPath(new BezierCurve(new Point(pushTwoPose), new Point(moveToThreeControl), new Point(moveToThreePose)))
+                //.setLinearHeadingInterpolation(pushTwoPose.getHeading(), moveToThreePose.getHeading())
 
                 // Set a reasonable timeout for the entire chain (adjust as needed)
                 .setPathEndTimeoutConstraint(15.0)
@@ -96,9 +96,10 @@ public class Testing extends OpMode {
 
 
         // Define the remaining individual paths normally
-        pushThree = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(moveToThreePose), new Point(pushThreePose)))
-                .setLinearHeadingInterpolation(moveToThreePose.getHeading(), pushThreePose.getHeading())
+        pushTwo = follower.pathBuilder()
+
+                .addPath(new BezierLine(new Point(moveToTwoPose), new Point(pushTwoPose)))
+                .setLinearHeadingInterpolation(moveToTwoPose.getHeading(), pushTwoPose.getHeading())
 
                 .setPathEndTimeoutConstraint(15.0)
                 .build();
@@ -107,19 +108,19 @@ public class Testing extends OpMode {
         placeOne = new Path(new BezierCurve(new Point(pushThreePose), new Point(placeOneControl), new Point(placeOnePose)));
         placeOne.setLinearHeadingInterpolation(pushThreePose.getHeading(), placeOnePose.getHeading());
 
-        pickupTwo = new Path(new BezierLine(new Point(placeOnePose), new Point(pickupPose)));
+        pickupTwo = new Path(new BezierCurve(new Point(placeOnePose), new Point(pickupControl), new Point(pickupPose)));
         pickupTwo.setLinearHeadingInterpolation(placeOnePose.getHeading(), pickupPose.getHeading());
 
         placeTwo = new Path(new BezierLine(new Point(pickupPose), new Point(placeTwoPose)));
         placeTwo.setLinearHeadingInterpolation(pickupPose.getHeading(), placeTwoPose.getHeading());
 
-        pickupThree = new Path(new BezierLine(new Point(placeTwoPose), new Point(pickupPose)));
+        pickupThree = new Path(new BezierCurve(new Point(placeTwoPose), new Point(pickupControl), new Point(pickupPose)));
         pickupThree.setLinearHeadingInterpolation(placeTwoPose.getHeading(), pickupPose.getHeading());
 
         placeThree = new Path(new BezierLine(new Point(pickupPose), new Point(placeThreePose)));
         placeThree.setLinearHeadingInterpolation(pickupPose.getHeading(), placeThreePose.getHeading());
 
-        pickupFour = new Path(new BezierLine(new Point(placeThreePose), new Point(pickupPose)));
+        pickupFour = new Path(new BezierCurve(new Point(placeThreePose), new Point(pickupControl), new Point(pickupPose)));
         pickupFour.setLinearHeadingInterpolation(placeThreePose.getHeading(), pickupPose.getHeading());
 
         placeFour = new Path(new BezierLine(new Point(pickupPose), new Point(placeFourPose)));
@@ -138,136 +139,226 @@ public class Testing extends OpMode {
         outtake.rotate(outtake.getRotatePosition());
         outtake.setToTargetPosition(outtake.getLevel());
         intake.retract();
+        boolean reachedDestination = !follower.isBusy();
 
         switch (pathState) {
+
+
             case 0:
-                outtake.pincerOpen();
-                outtake.twistInverseHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
-                outtake.setLevel(Outtake.OuttakeLevel.GROUND);
-                outtake.linkageBackward();
-                // Follow the entire pushConePathChain as one sequence
-                follower.followPath(pushConePathChain, true);
-                setPathState(8); // Skip to case 9 after pushConePathChain is complete
+                follower.followPath(placePreload, true);
+
+                // preps for preload specimen placement
+                outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
+                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
+                outtake.linkageForward();
+                outtake.twistHorizontal();
+
+                outtake.pincerClose();
+
+                setPathState(7);
                 break;
-            case 8:
-                if(!follower.isBusy()) {
-                    follower.followPath(pushThree, 0.85, false);
-                    outtake.twistInverseHorizontal();
+
+
+            case 7:
+                if(reachedDestination) {
+
+                    // places preload
+                    outtake.setLevel(Outtake.OuttakeLevel.GROUND);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
-                    outtake.setLevel(Outtake.OuttakeLevel.WALL);
                     outtake.linkageBackward();
+                    outtake.twistInverseHorizontal();
+
+                    outtake.pincerOpen();
+
+                    // pushes all of the samples
+                    follower.followPath(pushSamplePathChain, false);
+                    setPathState(8);
+                }
+                break;
+
+
+            case 8:
+                if(reachedDestination) {
+
+                    // preps for first specimen pickup
+                    outtake.setLevel(Outtake.OuttakeLevel.WALL);
+                    outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
+                    outtake.linkageBackward();
+                    outtake.twistInverseHorizontal();
+
+                    outtake.pincerOpen();
+
+                    // pushes final block and moves to pick up first specimen
+                    follower.followPath(pushTwo, 0.85, false);
                     setPathState(9);
                 }
+                break;
+
+
             case 9:
-                outtake.pincerOpen();
-                outtake.twistInverseHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
-                outtake.setLevel(Outtake.OuttakeLevel.WALL);
-                outtake.linkageBackward();
-                if(!follower.isBusy()) {
+                if(reachedDestination) {
+                    // picks up first specimen
                     outtake.pincerClose();
+
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
+
+                    // preps for first specimen placement
+                    outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
+                    outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
+                    outtake.linkageForward();
+                    outtake.twistHorizontal();
+
+                    // moves to place first specimen
                     follower.followPath(placeOne, false);
                     setPathState(10);
                 }
                 break;
+
+
             case 10:
-                outtake.twistHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
-                outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
-                outtake.linkageForward();
-                if(!follower.isBusy()) {
+                if(reachedDestination) {
+
+                    // places first specimen and preps for second specimen pickup
+                    outtake.setLevel(Outtake.OuttakeLevel.WALL);
+                    outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
+                    outtake.linkageBackward();
+                    outtake.twistInverseHorizontal();
+
+                    outtake.pincerOpen();
+
+                    // moves to pick up second specimen
                     follower.followPath(pickupTwo, false);
                     setPathState(11);
                 }
                 break;
+
+
             case 11:
-                outtake.pincerOpen();
-                outtake.twistInverseHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
-                outtake.setLevel(Outtake.OuttakeLevel.WALL);
-                outtake.linkageBackward();
-                if(!follower.isBusy()) {
+                if(reachedDestination) {
+
+                    // picks up second specimen
                     outtake.pincerClose();
+
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
+
+                    // preps for second specimen placement
+                    outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
+                    outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
+                    outtake.linkageForward();
+                    outtake.twistHorizontal();
+
+                    // moves to place second specimen
                     follower.followPath(placeTwo, false);
                     setPathState(12);
                 }
                 break;
+
+
             case 12:
-                outtake.twistHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
-                outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
-                outtake.linkageForward();
-                if(!follower.isBusy()) {
+                if(reachedDestination) {
+
+                    // places second specimen and preps for third specimen pickup
+                    outtake.setLevel(Outtake.OuttakeLevel.WALL);
+                    outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
+                    outtake.linkageBackward();
+                    outtake.twistInverseHorizontal();
+
+                    outtake.pincerOpen();
+
+                    // moves to pick up third specimen
                     follower.followPath(pickupThree, false);
                     setPathState(13);
                 }
                 break;
+
+
             case 13:
-                outtake.pincerOpen();
-                outtake.twistInverseHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
-                outtake.setLevel(Outtake.OuttakeLevel.WALL);
-                outtake.linkageBackward();
-                if(!follower.isBusy()) {
+                if(reachedDestination) {
+
+                    // picks up third specimen
                     outtake.pincerClose();
+
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
+
+                    // preps for third specimen placement
+                    outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
+                    outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
+                    outtake.linkageForward();
+                    outtake.twistHorizontal();
+
+                    // moves to place third specimen
                     follower.followPath(placeThree, false);
-                    setPathState(14);
+                    setPathState(16);
+                    /** skip placing the fourth non-preload specimen **/
                 }
                 break;
             case 14:
-                outtake.twistHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
-                outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
-                outtake.linkageForward();
-                if(!follower.isBusy()) {
+                if(reachedDestination) {
+
+                    // places third specimen and preps for fourth specimen pickup
+                    outtake.setLevel(Outtake.OuttakeLevel.WALL);
+                    outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
+                    outtake.linkageBackward();
+                    outtake.twistInverseHorizontal();
+
+                    outtake.pincerOpen();
+
+                    // moves to pick up fourth specimen
                     follower.followPath(pickupFour, false);
                     setPathState(15);
                 }
                 break;
+
+
             case 15:
-                outtake.pincerOpen();
-                outtake.twistInverseHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
-                outtake.setLevel(Outtake.OuttakeLevel.WALL);
-                outtake.linkageBackward();
-                if(!follower.isBusy()) {
+                if(reachedDestination) {
+
+                    // picks up fourth specimen
                     outtake.pincerClose();
+
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
+
+                    // preps for fourth specimen placement
+                    outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
+                    outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
+                    outtake.linkageForward();
+                    outtake.twistHorizontal();
+
+                    // moves to place fourth specimen
                     follower.followPath(placeFour, false);
                     setPathState(16);
                 }
                 break;
+
+
             case 16:
-                outtake.twistHorizontal();
-                outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
-                outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
-                outtake.linkageForward();
-                if(!follower.isBusy()) {
-                    outtake.twistInverseHorizontal();
+                if(reachedDestination) {
+
+                    // places fourth specimen
+                    outtake.setLevel(Outtake.OuttakeLevel.GROUND);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
-                    outtake.setLevel(Outtake.OuttakeLevel.WALL);
                     outtake.linkageBackward();
+                    outtake.twistInverseHorizontal();
+
                     outtake.pincerOpen();
+
+                    // moves to park
                     follower.followPath(park, false);
                 }
                 break;

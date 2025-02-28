@@ -20,7 +20,9 @@ import robot.system.subsystem.Outtake;
 @Config
 @TeleOp(name = "Tele", group = "Iterative OpMode")
 public class Tele extends OpMode {
-    public static double target = 0;
+    public static double target0 = 0;
+    public static double target1 = 0;
+
     private final ElapsedTime runtime = new ElapsedTime();
     private Hardware hardware;
     private IOController ioController;
@@ -54,67 +56,24 @@ public class Tele extends OpMode {
 //            ioController.getPreviousGamepad2().copy(ioController.getCurrentGamepad2());
 //            ioController.getCurrentGamepad2().copy(this.gamepad2);
 //        } catch (Exception ignored) {}
-//
-//        Placement.run(ioController);
 
-        ioController.loop();
-//        hardware.outtakeRotateL.setPower(0.25);
-//        hardware.outtakeRotateR.setPower(0.25);
-//
-//        double Kp = 0.001;
-//        double Ki = 0;
-//        double Kd = 0;
-//        double integral = 0;
-//        double previousError = 0;
-//        ElapsedTime timer = new ElapsedTime();
-//
-//        int reference = 0;
-//        int currentPosition = hardware.getOuttakeRotatePosition();
-//
-//        double error = reference - currentPosition;
-//        double derivative = (error - previousError) / timer.seconds();
-//        integral += error * timer.seconds();
-//
-//        double _o = (Kp * error) + (Ki * integral) + (Kd * derivative);
-//        previousError = error;
-//        timer.reset();
-//
-//        _o = Range.clip(_o, 0.5, 1);
-//        double power = pidRotate.out(reference, currentPosition);
-//        hardware.outtakeRotateR.setPower(-1);
+//        ioController.loop();
 
-//          outtake.rotate(0);
-
-//          hardware.outtakeRotateR.setPower(1);
-//
-//        hardware.linkageR.setPosition(target); // R backward 0.5
-//        hardware.linkageL.setPosition(target); // L forward 0.5
-//        outtake.rotate(Outtake.OuttakeRotate.SUBMERSIBLE);
-
-//        hardware.outtakeRotateR.setPower(target);
-//        hardwareMap.get(CRServo.class, "outtakeRotateR").setPower(target);
-
-//        hardware.outtakePincer.setPosition(1);
-//        hardware.outtakeTwist.setPosition(0.5);
-
-//        outtake.linkageForward();
-//        SystemClock.sleep(2000);
-//        outtake.linkageBackward();
-
-//        outtake.twistInverseHorizontal();
-//        outtake.twistHorizontal();
+        hardware.intakeRotateL.setPosition(target0); // Go to Tele tab in FTC Dashboard and adjust the value.
+        // Then go to Intake.java and change the target position in the corresponding methods.
+        hardware.intakeTwist.setPosition(target1);  // Do the same thing here to change the twist for the horizontal and vertical.
+        // When complete, UNCOMMENT `ioController.loop();` above these lines for the state machine to work
+        // You can now delete `hardware.intakeRotateL.setPosition(target0);` and `hardware.intakeTwist.setPosition(target1);`
 
 
+        telemetry.addData("Status", "Run Time: %s", runtime.toString());
+        telemetry.addData("State", ioController.getState());
         telemetry.addData("outtake isRungPlacement", outtake.isRungPlacement());
         telemetry.addData("outtake rotate pos state", outtake.getRotatePosition());
         telemetry.addData("outtake Pincer pos", hardware.outtakePincer.getPosition());
         telemetry.addData("outtake twist pos", hardware.outtakeTwist.getPosition());
-        telemetry.addData("Status", "Run Time: %s", runtime.toString());
-        telemetry.addData("State", ioController.getState());
         telemetry.addData("Intake Position", hardware.intake.getCurrentPosition());
         telemetry.addData("Intake Power", hardware.intake.getPower());
-//        telemetry.addData("Intake RotateL power", hardware.intakeRotateL.getPower());
-//        telemetry.addData("Intake RotateR power", hardware.intakeRotateR.getPower());
         telemetry.addData("Rotate Down", intake.isRotateDown());
         telemetry.addData("linkageR Pos", hardware.linkageR.getPosition());
         telemetry.addData("linkageL Pos", hardware.linkageL.getPosition());

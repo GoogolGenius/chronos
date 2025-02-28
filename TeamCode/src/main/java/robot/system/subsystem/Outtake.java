@@ -158,7 +158,7 @@ public class Outtake extends System {
     public void linkageForward() {
         double targetPosition = 0.9;
         hardware.linkageL.setPosition(targetPosition);
-//        hardware.linkageR.setPosition(targetPosition);
+        hardware.linkageR.setPosition(targetPosition);
     }
 
     public void linkageTransfer() {
