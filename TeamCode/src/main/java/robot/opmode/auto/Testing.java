@@ -42,24 +42,24 @@ public class Testing extends OpMode {
     private final Pose pushOnePose = new Pose(25, 28, Math.toRadians(0));
     private final Pose moveToTwoPose = new Pose(60, 20, Math.toRadians(0));
     private final Pose moveToTwoControl = new Pose(60, 34, Math.toRadians(0));
-    private final Pose pushTwoPose = new Pose(11, 20, Math.toRadians(0));
+    private final Pose pushTwoPose = new Pose(9.5, 20, Math.toRadians(0));
     private final Pose moveToThreePose = new Pose(60, 15, Math.toRadians(0));
     private final Pose moveToThreeControl = new Pose(60, 25, Math.toRadians(0));
     private final Pose pushThreePose = new Pose(11, 15, Math.toRadians(0));
     private final Pose pickupPose = new Pose(11, 34, Math.toRadians(0));
-    private final Pose placeOnePose = new Pose(37, 71, Math.toRadians(0));
+    private final Pose placeOnePose = new Pose(38, 71, Math.toRadians(0));
     private final Pose placeOneControl = new Pose(14, 71, Math.toRadians(0));
     private final Pose placeTwoPose = new Pose(38, 70, Math.toRadians(0));
-    private final Pose placeThreePose = new Pose(37, 72, Math.toRadians(0));
-    private final Pose placeFourPose = new Pose(37, 68, Math.toRadians(0));
+    private final Pose placeThreePose = new Pose(38, 72, Math.toRadians(0));
+    private final Pose placeFourPose = new Pose(38, 68, Math.toRadians(0));
     private final Pose pickupControl = new Pose(26, 34, Math.toRadians(0));
     private final Pose parkPose = new Pose(12, 26, Math.toRadians(0));
 
     // PathChain for cases 0-6
-    private PathChain pushSamplePathChain, pushTwo;
+    private PathChain pushSamplePathChain, pushTwo, pickupTwo, pickupThree;
 
     // Remaining individual paths
-    private Path placePreload, placeOne, pickupTwo, placeTwo, pickupThree, placeThree, pickupFour, placeFour, park;
+    private Path placePreload, placeOne, placeTwo, placeThree, pickupFour, placeFour, park;
 
     public void buildPaths() {
 
@@ -108,14 +108,25 @@ public class Testing extends OpMode {
         placeOne = new Path(new BezierCurve(new Point(pushThreePose), new Point(placeOneControl), new Point(placeOnePose)));
         placeOne.setLinearHeadingInterpolation(pushThreePose.getHeading(), placeOnePose.getHeading());
 
-        pickupTwo = new Path(new BezierCurve(new Point(placeOnePose), new Point(pickupControl), new Point(pickupPose)));
-        pickupTwo.setLinearHeadingInterpolation(placeOnePose.getHeading(), pickupPose.getHeading());
+        pickupTwo = follower.pathBuilder()
+
+            .addPath(new BezierCurve(new Point(placeOnePose), new Point(pickupControl), new Point(pickupPose)))
+            .setLinearHeadingInterpolation(placeOnePose.getHeading(), pickupPose.getHeading())
+
+            .setPathEndTimeoutConstraint(15.0)
+            .build();
+
 
         placeTwo = new Path(new BezierLine(new Point(pickupPose), new Point(placeTwoPose)));
         placeTwo.setLinearHeadingInterpolation(pickupPose.getHeading(), placeTwoPose.getHeading());
 
-        pickupThree = new Path(new BezierCurve(new Point(placeTwoPose), new Point(pickupControl), new Point(pickupPose)));
-        pickupThree.setLinearHeadingInterpolation(placeTwoPose.getHeading(), pickupPose.getHeading());
+        pickupThree = follower.pathBuilder()
+
+            .addPath(new BezierCurve(new Point(placeTwoPose), new Point(pickupControl), new Point(pickupPose)))
+            .setLinearHeadingInterpolation(placeTwoPose.getHeading(), pickupPose.getHeading())
+
+                .setPathEndTimeoutConstraint(15.0)
+                .build();
 
         placeThree = new Path(new BezierLine(new Point(pickupPose), new Point(placeThreePose)));
         placeThree.setLinearHeadingInterpolation(pickupPose.getHeading(), placeThreePose.getHeading());
@@ -151,7 +162,7 @@ public class Testing extends OpMode {
                 outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
                 outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
                 outtake.linkageForward();
-                outtake.twistHorizontal();
+                outtake.twistInverseHorizontal();
 
                 outtake.pincerClose();
 
@@ -166,12 +177,12 @@ public class Testing extends OpMode {
                     outtake.setLevel(Outtake.OuttakeLevel.GROUND);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
                     outtake.linkageBackward();
-                    outtake.twistInverseHorizontal();
+                    outtake.twistHorizontal();
 
                     outtake.pincerOpen();
 
                     // pushes all of the samples
-                    follower.followPath(pushSamplePathChain, false);
+                    follower.followPath(pushSamplePathChain, 0.85, false);
                     setPathState(8);
                 }
                 break;
@@ -184,12 +195,12 @@ public class Testing extends OpMode {
                     outtake.setLevel(Outtake.OuttakeLevel.WALL);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
                     outtake.linkageBackward();
-                    outtake.twistInverseHorizontal();
+                    outtake.twistHorizontal();
 
                     outtake.pincerOpen();
 
                     // pushes final block and moves to pick up first specimen
-                    follower.followPath(pushTwo, 0.85, false);
+                    follower.followPath(pushTwo, 0.75, false);
                     setPathState(9);
                 }
                 break;
@@ -201,7 +212,7 @@ public class Testing extends OpMode {
                     outtake.pincerClose();
 
                     try {
-                        Thread.sleep(200);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
@@ -210,7 +221,7 @@ public class Testing extends OpMode {
                     outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
                     outtake.linkageForward();
-                    outtake.twistHorizontal();
+                    outtake.twistInverseHorizontal();
 
                     // moves to place first specimen
                     follower.followPath(placeOne, false);
@@ -226,12 +237,12 @@ public class Testing extends OpMode {
                     outtake.setLevel(Outtake.OuttakeLevel.WALL);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
                     outtake.linkageBackward();
-                    outtake.twistInverseHorizontal();
+                    outtake.twistHorizontal();
 
                     outtake.pincerOpen();
 
                     // moves to pick up second specimen
-                    follower.followPath(pickupTwo, false);
+                    follower.followPath(pickupTwo, 0.75, false);
                     setPathState(11);
                 }
                 break;
@@ -253,7 +264,7 @@ public class Testing extends OpMode {
                     outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
                     outtake.linkageForward();
-                    outtake.twistHorizontal();
+                    outtake.twistInverseHorizontal();
 
                     // moves to place second specimen
                     follower.followPath(placeTwo, false);
@@ -269,12 +280,12 @@ public class Testing extends OpMode {
                     outtake.setLevel(Outtake.OuttakeLevel.WALL);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
                     outtake.linkageBackward();
-                    outtake.twistInverseHorizontal();
+                    outtake.twistHorizontal();
 
                     outtake.pincerOpen();
 
                     // moves to pick up third specimen
-                    follower.followPath(pickupThree, false);
+                    follower.followPath(pickupThree, 0.75, false);
                     setPathState(13);
                 }
                 break;
@@ -296,7 +307,7 @@ public class Testing extends OpMode {
                     outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
                     outtake.linkageForward();
-                    outtake.twistHorizontal();
+                    outtake.twistInverseHorizontal();
 
                     // moves to place third specimen
                     follower.followPath(placeThree, false);
@@ -311,7 +322,7 @@ public class Testing extends OpMode {
                     outtake.setLevel(Outtake.OuttakeLevel.WALL);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
                     outtake.linkageBackward();
-                    outtake.twistInverseHorizontal();
+                    outtake.twistHorizontal();
 
                     outtake.pincerOpen();
 
@@ -338,7 +349,7 @@ public class Testing extends OpMode {
                     outtake.setLevel(Outtake.OuttakeLevel.HIGH_RUNG);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.SUBMERSIBLE);
                     outtake.linkageForward();
-                    outtake.twistHorizontal();
+                    outtake.twistInverseHorizontal();
 
                     // moves to place fourth specimen
                     follower.followPath(placeFour, false);
@@ -354,7 +365,7 @@ public class Testing extends OpMode {
                     outtake.setLevel(Outtake.OuttakeLevel.GROUND);
                     outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
                     outtake.linkageBackward();
-                    outtake.twistInverseHorizontal();
+                    outtake.twistHorizontal();
 
                     outtake.pincerOpen();
 
