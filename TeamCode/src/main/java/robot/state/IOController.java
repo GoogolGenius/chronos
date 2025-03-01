@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import robot.state.function.HandoffInitializing;
 import robot.state.function.HandoffReady;
 import robot.state.function.Idle;
+import robot.state.function.ManualOverride;
 import robot.state.function.Pickup;
 import robot.state.function.BucketPlacement;
 import robot.state.function.RungPlacement;
@@ -20,6 +21,7 @@ public class IOController {
         HANDOFF_READY,
         BUCKET_PLACEMENT,
         RUNG_PLACEMENT,
+        MANUAL_OVERRIDE
     }
 
     private State state;
@@ -95,6 +97,8 @@ public class IOController {
             case RUNG_PLACEMENT:
                  RungPlacement.run(this);
                 break;
+            case MANUAL_OVERRIDE:
+                ManualOverride.run(this);
         }
     }
 }

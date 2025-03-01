@@ -7,46 +7,50 @@ import java.util.concurrent.TimeUnit;
 import robot.state.GamepadToggle;
 import robot.state.IOController;
 import robot.state.StateFunction;
+import robot.system.subsystem.Intake;
 import robot.system.subsystem.Outtake;
 
 public class Idle implements StateFunction {
     public static void run(IOController ioController) {
-        ioController.getOuttake().setToTargetPosition(ioController.getOuttake().getLevel());
-        ioController.getOuttake().rotate(ioController.getOuttake().getRotatePosition());
+        Outtake outtake = ioController.getOuttake();
+        Intake intake = ioController.getIntake();
 
-        ioController.getOuttake().linkageBackward();
-        ioController.getOuttake().twistHorizontal();
-        ioController.getOuttake().pincerOpen();
-        ioController.getOuttake().setLevel(Outtake.OuttakeLevel.WALL);
+        outtake.setToTargetPosition(outtake.getLevel());
+        outtake.rotate(outtake.getRotatePosition());
 
-        if (ioController.getOuttake().getLevel() == Outtake.OuttakeLevel.WALL
-                && ioController.getOuttake().isAtTargetPosition()) {
-            ioController.getOuttake().setRotatePosition(Outtake.OuttakeRotate.WALL);
+        outtake.linkageBackward();
+        outtake.twistHorizontal();
+        outtake.pincerOpen();
+        outtake.setLevel(Outtake.OuttakeLevel.WALL);
+
+        if (outtake.getLevel() == Outtake.OuttakeLevel.WALL
+                && outtake.isAtTargetPosition()) {
+            outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
         }
 
         if (ioController.getCurrentGamepad2().dpad_up
                 && !ioController.getPreviousGamepad2().dpad_up
-                && (ioController.getOuttake().getLevel() == Outtake.OuttakeLevel.WALL)) {
+                && (outtake.getLevel() == Outtake.OuttakeLevel.WALL)) {
             ioController.setState(IOController.State.RUNG_PLACEMENT);
         }
 
-//        ioController.getOuttake().setLevel(Outtake.OuttakeLevel.GROUND);
+//        outtake.setLevel(Outtake.OuttakeLevel.GROUND);
 
         if (ioController.getGamepadToggle().getToggleState(GamepadToggle.Button.A)) {
-            ioController.getIntake().extend();
+            intake.extend();
 
-            if (ioController.getIntake().isExtended()) {
+            if (intake.isExtended()) {
 //                ioController.setState(IOController.State.PICKUP);
 
             }
         } else {
-            ioController.getIntake().retract();
+            intake.retract();
         }
 
 //        if (!ioController.getGamepadToggle().getToggleState(GamepadToggle.Button.A)) {
-//            ioController.getIntake().retract();
+//            intake.retract();
 //
-////            if (ioController.getIntake().isRetracted()) {
+////            if (intake.isRetracted()) {
 ////                ioController.setState(IOController.State.HANDOFF_INITIALIZING);
 ////            }
 //
@@ -54,27 +58,32 @@ public class Idle implements StateFunction {
 //        }
 
         if (ioController.getGamepadToggle().getToggleState(GamepadToggle.Button.B)) {
-            ioController.getIntake().twistHorizontal();
+            intake.twistHorizontal();
         } else {
-            ioController.getIntake().twistVertical();
+            intake.twistVertical();
         }
 
         if (ioController.getGamepadToggle().getToggleState(GamepadToggle.Button.X)) {
-            ioController.getIntake().rotateDown();
-            ioController.getIntake().pincerOpen();
+            intake.rotateDown();
+            intake.pincerOpen();
         } else {
-            ioController.getIntake().pincerClose();
+            intake.pincerClose();
             int powerMilliSeconds = 500;
             ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
             // Schedule to run after x milliseconds
             scheduler.schedule(
-                    () -> ioController.getIntake().rotateUp(),
+                    () -> intake.rotateUp(),
                     powerMilliSeconds,
                     TimeUnit.MILLISECONDS
             );
 
             scheduler.shutdown();
+        }
+
+        // Manual override
+        if (ioController.getGamepadToggle().getToggleState(GamepadToggle.Button.RIGHT_BUMPER)) {
+            ioController.setState(IOController.State.MANUAL_OVERRIDE);
         }
     }
 }

@@ -128,7 +128,7 @@ public class Outtake extends System {
         int targetPosition = position.getValue();
         int currentPosition = hardware.getOuttakeRotatePosition();
         double power = pidRotate.out(targetPosition, currentPosition);
-        hardware.outtakeRotateR.setPower(power); // broken servo
+        hardware.outtakeRotateR.setPower(power);
         hardware.outtakeRotateL.setPower(-power);
     }
 
@@ -136,7 +136,13 @@ public class Outtake extends System {
         int targetPosition = position;
         int currentPosition = hardware.getOuttakeRotatePosition();
         double power = pidRotate.out(targetPosition, currentPosition);
-        hardware.outtakeRotateL.setPower(power);
+        hardware.outtakeRotateR.setPower(power);
+        hardware.outtakeRotateL.setPower(-power);
+    }
+
+    public void rotate(double power) {
+        hardware.outtakeRotateR.setPower(power);
+        hardware.outtakeRotateL.setPower(-power);
     }
 
     public boolean isRotated() {
