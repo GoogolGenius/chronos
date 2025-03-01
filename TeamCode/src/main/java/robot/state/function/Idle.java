@@ -64,21 +64,29 @@ public class Idle implements StateFunction {
         }
 
         if (ioController.getGamepadToggle().getToggleState(GamepadToggle.Button.X)) {
-            intake.rotateDown();
+            //intake.rotateDown();
             intake.pincerOpen();
         } else {
+            //intake.rotateUp();
             intake.pincerClose();
-            int powerMilliSeconds = 500;
-            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
-            // Schedule to run after x milliseconds
-            scheduler.schedule(
-                    () -> intake.rotateUp(),
-                    powerMilliSeconds,
-                    TimeUnit.MILLISECONDS
-            );
+//            int powerMilliSeconds = 500;
+//            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+//
+//            // Schedule to run after x milliseconds
+//            scheduler.schedule(
+//                    () -> intake.rotateUp(),
+//                    powerMilliSeconds,
+//                    TimeUnit.MILLISECONDS
+//            );
+//
+//            scheduler.shutdown();
+        }
 
-            scheduler.shutdown();
+        if (ioController.getGamepadToggle().getToggleState(GamepadToggle.Button.DPAD_DOWN)) {
+            intake.rotateDown();
+        } else {
+            intake.rotateUp();
         }
 
         // Manual override

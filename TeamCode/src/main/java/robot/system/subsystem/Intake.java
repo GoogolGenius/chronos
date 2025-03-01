@@ -48,12 +48,12 @@ public class Intake extends System {
     }
 
     public void pincerOpen() {
-        double targetPosition = 0.4;
+        double targetPosition = 0;
         hardware.intakePincer.setPosition(targetPosition);
     }
 
     public void pincerClose() {
-        double targetPosition = 0;
+        double targetPosition = 0.4;
         hardware.intakePincer.setPosition(targetPosition);
     }
 
@@ -67,63 +67,66 @@ public class Intake extends System {
         hardware.intakeTwist.setPosition(targetPosition);
     }
 
+    public void rotateUp() {
+//        if (isRotateUp) { return; }
+//        hardware.intakeRotateL.setPosition(0);
+//        hardware.intakeRotateR.setPosition(1);
+        hardware.intakeRotateL.setPosition(0.6);
+        hardware.intakeRotateR.setPosition(0.35);
+    }
+
+    public void rotateDown() {
+//        if (isRotateDown) { return;}
+//        hardware.intakeRotateL.setPosition(1);
+//        hardware.intakeRotateR.setPosition(0);
+        hardware.intakeRotateL.setPosition(0.35);
+        hardware.intakeRotateR.setPosition(0.6);
+    }
+
 //    public void rotateUp() {
 //        if (isRotateUp) { return; }
-//        hardware.intakeRotateL.setPosition(0.6);
-//        hardware.intakeRotateR.setPosition(0.35);
+//
+//        int powerMilliSeconds = 1500;
+//
+////        hardware.intakeRotateL.setPower(1);
+//        hardware.intakeRotateR.setPower(-1);
+//
+//        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+//
+//        // Schedule to run after x milliseconds
+//        scheduler.schedule(() -> {
+//            hardware.intakeRotateL.setPower(0);
+//            hardware.intakeRotateR.setPower(0);
+//            isRotateUp = true;
+//            isRotateDown = false;
+//        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
+//
+//        scheduler.shutdown();
 //    }
 //
 //    public void rotateDown() {
 //        if (isRotateDown) { return;}
-//        hardware.intakeRotateL.setPosition(0.13);
-//        hardware.intakeRotateR.setPosition(0.77);
+//
+//        int powerMilliSeconds = 1500;
+//
+////        hardware.intakeRotateL.setPower(-1);
+//        hardware.intakeRotateR.setPower(1);
+//
+//        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+//
+//        // Schedule to run after x milliseconds
+//        scheduler.schedule(() -> {
+//            hardware.intakeRotateL.setPower(0);
+//            hardware.intakeRotateR.setPower(0);
+//            isRotateDown = true;
+//            isRotateUp = false;
+//        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
+
+//
+//        scheduler.shutdown();
 //    }
 
-    public void rotateUp() {
-        if (isRotateUp) { return; }
-
-        int powerMilliSeconds = 1500;
-
-//        hardware.intakeRotateL.setPower(1);
-        hardware.intakeRotateR.setPower(-1);
-
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
-        // Schedule to run after x milliseconds
-        scheduler.schedule(() -> {
-            hardware.intakeRotateL.setPower(0);
-            hardware.intakeRotateR.setPower(0);
-            isRotateUp = true;
-            isRotateDown = false;
-        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
-
-        scheduler.shutdown();
-    }
-
-    public void rotateDown() {
-        if (isRotateDown) { return;}
-
-        int powerMilliSeconds = 1500;
-
-//        hardware.intakeRotateL.setPower(-1);
-        hardware.intakeRotateR.setPower(1);
-
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
-        // Schedule to run after x milliseconds
-        scheduler.schedule(() -> {
-            hardware.intakeRotateL.setPower(0);
-            hardware.intakeRotateR.setPower(0);
-            isRotateDown = true;
-            isRotateUp = false;
-        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
-
-        scheduler.shutdown();
-    }
-
-    public boolean isRotateUp() {
-        return this.isRotateUp;
-    }
+    public boolean isRotateUp() { return this.isRotateUp; }
 
     public boolean isRotateDown() {
         return this.isRotateDown;

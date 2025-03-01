@@ -42,12 +42,12 @@ public class Testing extends OpMode {
     private final Pose pushOnePose = new Pose(25, 28, Math.toRadians(0));
     private final Pose moveToTwoPose = new Pose(60, 20, Math.toRadians(0));
     private final Pose moveToTwoControl = new Pose(60, 34, Math.toRadians(0));
-    private final Pose pushTwoPose = new Pose(8, 20, Math.toRadians(0));
+    private final Pose pushTwoPose = new Pose(7.5, 20, Math.toRadians(0));
     private final Pose moveToThreePose = new Pose(60, 15, Math.toRadians(0));
     private final Pose moveToThreeControl = new Pose(60, 25, Math.toRadians(0));
     private final Pose pushThreePose = new Pose(11, 15, Math.toRadians(0));
     private final Pose pickupPose = new Pose(11, 34, Math.toRadians(0));
-    private final Pose placeOnePose = new Pose(38, 73, Math.toRadians(0));
+    private final Pose placeOnePose = new Pose(40, 73, Math.toRadians(0));
     private final Pose placeOneControl = new Pose(14, 71, Math.toRadians(0));
     private final Pose placeTwoPose = new Pose(40, 72, Math.toRadians(0));
     private final Pose placeThreePose = new Pose(40, 74, Math.toRadians(0));
