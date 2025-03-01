@@ -128,7 +128,7 @@ public class Outtake extends System {
         int targetPosition = position.getValue();
         int currentPosition = hardware.getOuttakeRotatePosition();
         double power = pidRotate.out(targetPosition, currentPosition);
-//        hardware.outtakeRotateR.setPower(power); // broken servo
+        hardware.outtakeRotateR.setPower(power); // broken servo
         hardware.outtakeRotateL.setPower(-power);
     }
 
@@ -158,7 +158,7 @@ public class Outtake extends System {
     public void linkageForward() {
         double targetPosition = 0.9;
         hardware.linkageL.setPosition(targetPosition);
-        hardware.linkageR.setPosition(targetPosition);
+        //hardware.linkageR.setPosition(targetPosition);
     }
 
     public void linkageTransfer() {

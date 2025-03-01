@@ -31,7 +31,7 @@ public class IOController {
     private Gamepad previousGamepad2 = new Gamepad();
 
     public IOController(Intake intake, Outtake outtake, OpMode opMode) {
-        this.state = State.IDLE; // For testing right now
+        this.state = State.IDLE;
         this.intake = intake;
         this.outtake = outtake;
         this.opMode = opMode;

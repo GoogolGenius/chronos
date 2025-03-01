@@ -52,16 +52,12 @@ public class Tele extends OpMode {
     @Override
     public void loop() {
         drive.run();
-//        try {
-//            ioController.getPreviousGamepad2().copy(ioController.getCurrentGamepad2());
-//            ioController.getCurrentGamepad2().copy(this.gamepad2);
-//        } catch (Exception ignored) {}
 
-//        ioController.loop();
+       ioController.loop();
 
-        hardware.intakeRotateL.setPosition(target0); // Go to Tele tab in FTC Dashboard and adjust the value.
+//        hardware.intakeRotateL.setPosition(target0); // Go to Tele tab in FTC Dashboard and adjust the value.
         // Then go to Intake.java and change the target position in the corresponding methods.
-        hardware.intakeTwist.setPosition(target1);  // Do the same thing here to change the twist for the horizontal and vertical.
+//        hardware.intakeTwist.setPosition(target1);  // Do the same thing here to change the twist for the horizontal and vertical.
         // When complete, UNCOMMENT `ioController.loop();` above these lines for the state machine to work
         // You can now delete `hardware.intakeRotateL.setPosition(target0);` and `hardware.intakeTwist.setPosition(target1);`
 
