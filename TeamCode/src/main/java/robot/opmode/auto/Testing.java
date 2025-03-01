@@ -35,25 +35,25 @@ public class Testing extends OpMode {
     private int pathState;
 
     private final Pose startPose = new Pose(8, 60, Math.toRadians(0));
-    private final Pose placePreloadPose = new Pose(37, 69, Math.toRadians(0));
+    private final Pose placePreloadPose = new Pose(37, 72, Math.toRadians(0));
     private final Pose moveToOnePose = new Pose(60, 36, Math.toRadians(0));
     private final Pose moveToOneControl = new Pose(22, 36, Math.toRadians(0));
     private final Pose strafeToOnePose = new Pose(60, 28, Math.toRadians(0));
     private final Pose pushOnePose = new Pose(25, 28, Math.toRadians(0));
     private final Pose moveToTwoPose = new Pose(60, 20, Math.toRadians(0));
     private final Pose moveToTwoControl = new Pose(60, 34, Math.toRadians(0));
-    private final Pose pushTwoPose = new Pose(9.5, 20, Math.toRadians(0));
+    private final Pose pushTwoPose = new Pose(8, 20, Math.toRadians(0));
     private final Pose moveToThreePose = new Pose(60, 15, Math.toRadians(0));
     private final Pose moveToThreeControl = new Pose(60, 25, Math.toRadians(0));
     private final Pose pushThreePose = new Pose(11, 15, Math.toRadians(0));
     private final Pose pickupPose = new Pose(11, 34, Math.toRadians(0));
-    private final Pose placeOnePose = new Pose(38, 71, Math.toRadians(0));
+    private final Pose placeOnePose = new Pose(38, 73, Math.toRadians(0));
     private final Pose placeOneControl = new Pose(14, 71, Math.toRadians(0));
-    private final Pose placeTwoPose = new Pose(38, 70, Math.toRadians(0));
-    private final Pose placeThreePose = new Pose(38, 72, Math.toRadians(0));
-    private final Pose placeFourPose = new Pose(38, 68, Math.toRadians(0));
+    private final Pose placeTwoPose = new Pose(40, 72, Math.toRadians(0));
+    private final Pose placeThreePose = new Pose(40, 74, Math.toRadians(0));
+    private final Pose placeFourPose = new Pose(40, 68, Math.toRadians(0));
     private final Pose pickupControl = new Pose(26, 34, Math.toRadians(0));
-    private final Pose parkPose = new Pose(12, 26, Math.toRadians(0));
+    private final Pose parkPose = new Pose(12, 33, Math.toRadians(0));
 
     // PathChain for cases 0-6
     private PathChain pushSamplePathChain, pushTwo, pickupTwo, pickupThree;
@@ -182,7 +182,7 @@ public class Testing extends OpMode {
                     outtake.pincerOpen();
 
                     // pushes all of the samples
-                    follower.followPath(pushSamplePathChain, 0.85, false);
+                    follower.followPath(pushSamplePathChain, 0.85, true);
                     setPathState(8);
                 }
                 break;
@@ -200,7 +200,7 @@ public class Testing extends OpMode {
                     outtake.pincerOpen();
 
                     // pushes final block and moves to pick up first specimen
-                    follower.followPath(pushTwo, 0.75, false);
+                    follower.followPath(pushTwo, 0.75, true);
                     setPathState(9);
                 }
                 break;
@@ -209,10 +209,15 @@ public class Testing extends OpMode {
             case 9:
                 if(reachedDestination) {
                     // picks up first specimen
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                     outtake.pincerClose();
 
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
@@ -224,7 +229,7 @@ public class Testing extends OpMode {
                     outtake.twistInverseHorizontal();
 
                     // moves to place first specimen
-                    follower.followPath(placeOne, false);
+                    follower.followPath(placeOne, true);
                     setPathState(10);
                 }
                 break;
@@ -242,7 +247,7 @@ public class Testing extends OpMode {
                     outtake.pincerOpen();
 
                     // moves to pick up second specimen
-                    follower.followPath(pickupTwo, 0.75, false);
+                    follower.followPath(pickupTwo, 0.75, true);
                     setPathState(11);
                 }
                 break;
@@ -250,6 +255,11 @@ public class Testing extends OpMode {
 
             case 11:
                 if(reachedDestination) {
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
 
                     // picks up second specimen
                     outtake.pincerClose();
@@ -267,7 +277,7 @@ public class Testing extends OpMode {
                     outtake.twistInverseHorizontal();
 
                     // moves to place second specimen
-                    follower.followPath(placeTwo, false);
+                    follower.followPath(placeTwo, true);
                     setPathState(12);
                 }
                 break;
@@ -285,7 +295,7 @@ public class Testing extends OpMode {
                     outtake.pincerOpen();
 
                     // moves to pick up third specimen
-                    follower.followPath(pickupThree, 0.75, false);
+                    follower.followPath(pickupThree, 0.75, true);
                     setPathState(13);
                 }
                 break;
@@ -293,6 +303,11 @@ public class Testing extends OpMode {
 
             case 13:
                 if(reachedDestination) {
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
 
                     // picks up third specimen
                     outtake.pincerClose();
@@ -310,7 +325,7 @@ public class Testing extends OpMode {
                     outtake.twistInverseHorizontal();
 
                     // moves to place third specimen
-                    follower.followPath(placeThree, false);
+                    follower.followPath(placeThree, true);
                     setPathState(16);
                     /** skip placing the fourth non-preload specimen **/
                 }
@@ -327,7 +342,7 @@ public class Testing extends OpMode {
                     outtake.pincerOpen();
 
                     // moves to pick up fourth specimen
-                    follower.followPath(pickupFour, false);
+                    follower.followPath(pickupFour, true);
                     setPathState(15);
                 }
                 break;
@@ -335,6 +350,11 @@ public class Testing extends OpMode {
 
             case 15:
                 if(reachedDestination) {
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
 
                     // picks up fourth specimen
                     outtake.pincerClose();
@@ -352,7 +372,7 @@ public class Testing extends OpMode {
                     outtake.twistInverseHorizontal();
 
                     // moves to place fourth specimen
-                    follower.followPath(placeFour, false);
+                    follower.followPath(placeFour, true);
                     setPathState(16);
                 }
                 break;
@@ -363,14 +383,14 @@ public class Testing extends OpMode {
 
                     // places fourth specimen
                     outtake.setLevel(Outtake.OuttakeLevel.GROUND);
-                    outtake.setRotatePosition(Outtake.OuttakeRotate.WALL);
+                    outtake.setRotatePosition(Outtake.OuttakeRotate.TRANSFER);
                     outtake.linkageBackward();
                     outtake.twistHorizontal();
 
                     outtake.pincerOpen();
 
                     // moves to park
-                    follower.followPath(park, false);
+                    follower.followPath(park, true);
                 }
                 break;
         }

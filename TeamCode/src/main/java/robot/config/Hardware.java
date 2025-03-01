@@ -26,8 +26,8 @@ public class Hardware {
     public Servo linkageL;
     public Servo linkageR;
     public DcMotor intake;
-    public Servo intakeRotateL;
-    public Servo intakeRotateR;
+    public CRServo intakeRotateL;
+    public CRServo intakeRotateR;
     public Servo intakeTwist;
     public Servo intakePincer;
 
@@ -47,8 +47,8 @@ public class Hardware {
         linkageL = hardwareMap.get(Servo.class, "linkageL");
         linkageR = hardwareMap.get(Servo.class, "linkageR");
         intake = hardwareMap.get(DcMotor.class, "intake");
-        intakeRotateL = hardwareMap.get(Servo.class, "intakeRotateL");
-        intakeRotateR = hardwareMap.get(Servo.class, "intakeRotateR");
+        intakeRotateL = hardwareMap.get(CRServo.class, "intakeRotateL");
+        intakeRotateR = hardwareMap.get(CRServo.class, "intakeRotateR");
         intakeTwist = hardwareMap.get(Servo.class, "intakeTwist");
         intakePincer = hardwareMap.get(Servo.class, "intakePincer");
 

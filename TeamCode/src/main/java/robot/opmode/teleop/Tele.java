@@ -22,6 +22,7 @@ import robot.system.subsystem.Outtake;
 public class Tele extends OpMode {
     public static double target0 = 0;
     public static double target1 = 0;
+    public static double target2 = 0;
 
     private final ElapsedTime runtime = new ElapsedTime();
     private Hardware hardware;
@@ -53,10 +54,12 @@ public class Tele extends OpMode {
     public void loop() {
         drive.run();
 
-       ioController.loop();
+        ioController.loop();
 
+//        hardware.intakeRotateR.setPower(1);
 //        hardware.intakeRotateL.setPosition(target0); // Go to Tele tab in FTC Dashboard and adjust the value.
-        // Then go to Intake.java and change the target position in the corresponding methods.
+//        hardware.intakeRotateR.setPosition(target2);
+//        // Then go to Intake.java and change the target position in the corresponding methods.
 //        hardware.intakeTwist.setPosition(target1);  // Do the same thing here to change the twist for the horizontal and vertical.
         // When complete, UNCOMMENT `ioController.loop();` above these lines for the state machine to work
         // You can now delete `hardware.intakeRotateL.setPosition(target0);` and `hardware.intakeTwist.setPosition(target1);`

@@ -58,55 +58,67 @@ public class Intake extends System {
     }
 
     public void twistHorizontal() {
-        double targetPosition = 0.5;
+        double targetPosition = 0.3;
         hardware.intakeTwist.setPosition(targetPosition);
     }
 
     public void twistVertical() {
-        double targetPosition = 0.15;
+        double targetPosition = 0.65;
         hardware.intakeTwist.setPosition(targetPosition);
     }
+
+//    public void rotateUp() {
+//        if (isRotateUp) { return; }
+//        hardware.intakeRotateL.setPosition(0.6);
+//        hardware.intakeRotateR.setPosition(0.35);
+//    }
+//
+//    public void rotateDown() {
+//        if (isRotateDown) { return;}
+//        hardware.intakeRotateL.setPosition(0.13);
+//        hardware.intakeRotateR.setPosition(0.77);
+//    }
 
     public void rotateUp() {
         if (isRotateUp) { return; }
 
-        int powerMilliSeconds = 750;
+        int powerMilliSeconds = 1500;
 
-        hardware.intakeRotateL.setPosition(1);
-//        hardware.intakeRotateR.setPosition(0);
+//        hardware.intakeRotateL.setPower(1);
+        hardware.intakeRotateR.setPower(-1);
 
-//        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-//
-//        // Schedule to run after x milliseconds
-//        scheduler.schedule(() -> {
-//            hardware.intakeRotateL.setPower(0);
-//            hardware.intakeRotateR.setPower(0);
-//            isRotateUp = true;
-//            isRotateDown = false;
-//        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
-//
-//        scheduler.shutdown();
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
+        // Schedule to run after x milliseconds
+        scheduler.schedule(() -> {
+            hardware.intakeRotateL.setPower(0);
+            hardware.intakeRotateR.setPower(0);
+            isRotateUp = true;
+            isRotateDown = false;
+        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
+
+        scheduler.shutdown();
     }
 
     public void rotateDown() {
         if (isRotateDown) { return;}
 
-        int powerMilliSeconds = 750;
+        int powerMilliSeconds = 1500;
 
-        hardware.intakeRotateL.setPosition(0);
-//        hardware.intakeRotateR.setPosition(1);
+//        hardware.intakeRotateL.setPower(-1);
+        hardware.intakeRotateR.setPower(1);
 
-//        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-//
-//        // Schedule to run after x milliseconds
-//        scheduler.schedule(() -> {
-//            hardware.intakeRotateL.setPower(0);
-//            hardware.intakeRotateR.setPower(0);
-//            isRotateDown = true;
-//            isRotateUp = false;
-//        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
-//
-//        scheduler.shutdown();
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
+        // Schedule to run after x milliseconds
+        scheduler.schedule(() -> {
+            hardware.intakeRotateL.setPower(0);
+            hardware.intakeRotateR.setPower(0);
+            isRotateDown = true;
+            isRotateUp = false;
+        }, powerMilliSeconds, TimeUnit.MILLISECONDS);
+
+        scheduler.shutdown();
     }
 
     public boolean isRotateUp() {
