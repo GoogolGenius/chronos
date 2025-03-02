@@ -57,7 +57,7 @@ public class Tele extends OpMode {
         ioController.loop();
 
 //        hardware.intakeRotateR.setPower(1);
-//        hardware.intakeRotateL.setPosition(target0); // Go to Tele tab in FTC Dashboard and adjust the value.
+//        hardware.intakeRotateL.setPosition(target0); // Go target0o Tele tab in FTC Dashboard and adjust the value.
 //        hardware.intakeRotateR.setPosition(target2);
 //        // Then go to Intake.java and change the target position in the corresponding methods.
 //        hardware.intakeTwist.setPosition(target1);  // Do the same thing here to change the twist for the horizontal and vertical.
